@@ -16,14 +16,15 @@ class CreatePage(Page):
         return TopMenu(self.driver)
 
     @property
-    def slider(self):
-        return Slider(self.driver)
+    def reqire_menu(self):
+        return RequireMenu
 
     def setRadioMobileApp(self):
         self.driver.find_element_by_css_selector(self.MOBILE).click()
 
     def setLenta(self):
         self.driver.find_element_by_css_selector(self.LENTA).click()
+
 
 
 class TopMenu(Component):
@@ -34,13 +35,16 @@ class TopMenu(Component):
             lambda d: d.find_element_by_css_selector(self.EMAIL).text
         )
 
+class RequireMenu(Component):
+    LINK = ".banner-form__input"
 
-class Slider(Component):
-    SLIDER = '.price-slider__begunok'
+    LINK_VALUE = 'https://play.google.com/store/apps/details?id=org.bmstu.BmstuSchedule&hl=ru'
+    SMALL_PICTURE_PATH = '/resourses/icon.jpg' #png doesnt work
+    BIG_PICTURE_PATH = '/resourses/banner.jpg' #png doesnt work
 
-    def move(self, offset):
+    def set_link(self):
         element = WebDriverWait(self.driver, 30, 0.1).until(
-            lambda d: d.find_element_by_css_selector(self.SLIDER)
+            lambda d: d.find_element_by_css_selector(self.LINK)
         )
-        ac = ActionChains(self.driver)
-        ac.click_and_hold(element).move_by_offset(offset, 0).perform()
+
+

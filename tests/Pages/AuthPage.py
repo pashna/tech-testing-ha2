@@ -21,6 +21,7 @@ class AuthForm(Component):
 
     def set_login(self, login):
         self.driver.find_element_by_css_selector(self.LOGIN).send_keys(login)
+        #print(self.driver.find_element_by_css_selector(self.LOGIN).get_attribute("value"))
 
     def set_password(self, pwd):
         self.driver.find_element_by_css_selector(self.PASSWORD).send_keys(pwd)
