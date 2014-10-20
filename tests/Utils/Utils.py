@@ -48,7 +48,7 @@ def wait_for_create_page_load(driver):
 
 def wait_for_campaigns_page_load(driver):
     LAST_ELEMENT = '/html/body/div[9]'
-    WebDriverWait(driver, 30, 1).until(
+    WebDriverWait(driver, 30, 2).until(
             lambda d: d.find_element_by_xpath(LAST_ELEMENT)
     )
 
