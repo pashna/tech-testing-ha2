@@ -46,7 +46,7 @@ class AuthTestCase(unittest.TestCase):
         create_page.set_radio_mobile_app()
         create_page.set_lenta()
 
-        reqire_menu = create_page.reqire_menu
+        reqire_menu = create_page.require_menu
         reqire_menu.set_link(LINK)
 
         WebDriverWait(self.driver, 30, 10).until(ajax_complete, 'AJAX')

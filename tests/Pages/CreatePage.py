@@ -23,7 +23,7 @@ class CreatePage(Page):
         return TopMenu(self.driver)
 
     @property
-    def reqire_menu(self):
+    def require_menu(self):
         return RequireMenu(self.driver)
 
     def set_radio_mobile_app(self):
@@ -85,7 +85,6 @@ class RequireMenu(Component):
         element.send_keys(header)
 
     def set_text(self, text):
-        text = unicode(text, errors='replace')
         element = self.driver.find_element_by_xpath(self.TEXT)
         element.send_keys(text)
 

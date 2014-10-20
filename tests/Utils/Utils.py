@@ -12,7 +12,6 @@ def auth(driver):
     USERNAME = 'tech-testing-ha2-14@bk.ru'
     PASSWORD = os.environ['TTHA2PASSWORD']
     DOMAIN = '@bk.ru'
-    PH_USER = '#PH_user-email'
 
     auth_page = AuthPage(driver)
     auth_page.open()
@@ -54,6 +53,27 @@ def wait_for_campaigns_page_load(driver):
 
 def generate_random_word(length):
    return ''.join(random.choice(string.lowercase) for i in range(length))
+
+
+def fill_require(driver, create_page, LINK='play.google.com/store/apps/details?id=org.bmstu.BmstuSchedule&hl=ru',
+                 HEADER = 'BMSTU DASHBOARD', TEXT = 'AMAZING APPLICATION! FOR YOU, FOR ME, FOR YOUR CAT',
+                 BIG_PHOTO = 'banner.jpg', SMALL_PHOTO = 'icon.jpg', title = generate_random_word(5)):
+
+    #create_page = auth(driver=driver)
+    create_page.set_title(title)
+    create_page.set_radio_mobile_app()
+    create_page.set_lenta()
+
+    require_menu = create_page.require_menu
+    require_menu.set_link(LINK)
+    wait_for_ajax_complete(driver=driver)
+
+    require_menu.set_header(HEADER)
+    require_menu.set_text(TEXT)
+    require_menu.set_big_photo(BIG_PHOTO)
+    require_menu.set_small_photo(SMALL_PHOTO)
+
+    wait_for_ajax_complete(driver=driver)
 
 
 
