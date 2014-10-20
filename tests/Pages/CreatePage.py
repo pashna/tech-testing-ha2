@@ -59,6 +59,7 @@ class TopMenu(Component):
         )
 
 
+
 class RequireMenu(Component):
     LINK = "/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[1]/span[2]/input"
     HEADER = '/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[2]/input'
@@ -104,6 +105,7 @@ class RequireMenu(Component):
         element.send_keys(absolute_path)
 
 
+
 class AgeRestriction(Component):
     SIX = '//*[@id="restrict-6+"]'
     ZERO = '//*[@id="restrict-0+"]'
@@ -135,3 +137,69 @@ class AgeRestriction(Component):
             self.change_state()
             self._set_default()
             self.change_state()
+
+
+
+
+class Interest(Component):
+    BUSINESS = '//*[@id="view2332"]'
+    TUMBLER = '//*[@id="interests60"]/span[1]'
+
+
+    def __init__(self):
+        self.hash = {}
+        self.hash["B2B"] = '//*[@id="view9669"]'
+        self.hash["Малый бизнес"] = '//*[@id="view9670"]'
+        self.hash["Управление Персоналом"] = '//*[@id="view9671"]'
+        self.hash["Финансы и бухгалтерский учет"] = '//*[@id="view9672"]'
+        self.hash["Юридическая поддержка"] = '//*[@id="view9673"]'
+        self.hash["B2B / Для офиса"] = '//*[@id="view9674"]'
+        self.hash["B2B / Документальная и финансово-правовая поддержка"] = '//*[@id="view9675"]'
+        self.hash["B2B / Медицинское оборудование"] = '//*[@id="view9676"]'
+        self.hash["B2B / Оборудование, станки, энергообеспечение"] = '//*[@id="view9677"]'
+        self.hash["B2B / Реклама и маркетинг"] = '//*[@id="view9678"]'
+        self.hash["B2B / Сырье и материалы"] = '//*[@id="view9679"]'
+        self.hash["B2B / Торговое оборудование и товары оптом"] = '//*[@id="view9680"]'
+
+
+    def check_business(self):
+        self.driver.find_element_by_xpath(self.BUSINESS).click()
+
+
+    def check_tumbler(self):
+        self.driver.find_element_by_xpath(self.TUMBLER).click()
+
+
+    def hide_tree(self):
+        elem = self.driver.find_element_by_xpath(self.hash["B2B"])
+        if elem.is_displayed():
+            self.check_business()
+
+
+    def deselect_all(self):
+        elem = self.driver.find_element_by_xpath(self.BUSINESS)
+        if elem.get_attribute("checked"):
+            self.check_business()
+            self.check_business()
+        else:
+            self.check_business()
+
+
+    def click_element(self, name):
+        self.driver.find_element_by_xpath(self.hash[name]).click()
+
+
+    def is_checked(self, array_name):
+        for i in array_name:
+            elem = self.driver.find_element_by_xpath(self.hash[i])
+            if (elem.get_attribute("checked") == False):
+                return False
+        return True
+
+
+    def is_in_list(self, array_name):
+        if array_name.length
+
+
+
+
