@@ -1,8 +1,10 @@
+#coding=utf-8
 __author__ = 'popka'
 
 import unittest
 import tests.Utils.Utils as utils
 from selenium.webdriver import ActionChains, DesiredCapabilities, Remote
+from selenium.webdriver.support.wait import WebDriverWait
 
 class InterestInterfaceTest(unittest.TestCase):
 
@@ -16,6 +18,26 @@ class InterestInterfaceTest(unittest.TestCase):
         InterestInterfaceTest.create_page = utils.auth(driver=InterestInterfaceTest.driver)
         utils.fill_require(InterestInterfaceTest.driver, create_page=InterestInterfaceTest.create_page)
 
+
     @classmethod
     def tearDownClass(cls):
         InterestInterfaceTest.driver.quit()
+
+    def setUp(self):
+        self.interest = InterestInterfaceTest.create_page.interest
+
+
+    def tearDown(self):
+        self.interest.deselect_all()
+        self.interest.hide_tree()
+
+    def test_checked(self):
+ #       array_name = ["Малый бизнес"]
+#
+#        self.interest.check_tumbler()
+#        self.interest.click_element(array_name)
+#        self.assertTrue(self.interest.is_checked(array_name))
+        self.interest.open_interest()
+        utils.wait_for_ajax_complete(self.driver)
+        self.interest.open_business()
+        self.interest.check_business()

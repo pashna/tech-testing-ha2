@@ -7,7 +7,7 @@ import os
 #from tests.Utils.Utils import ajax_complete
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import WebDriverException
-from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import NoSuchElementException
 
 __author__ = 'popka'
 
@@ -30,6 +30,10 @@ class CreatePage(Page):
     @property
     def age_restriction(self):
         return AgeRestriction(self.driver)
+
+    @property
+    def interest(self):
+        return Interest(self.driver)
 
     def set_radio_mobile_app(self):
         self.driver.find_element_by_css_selector(self.MOBILE).click()
@@ -105,7 +109,6 @@ class RequireMenu(Component):
         element.send_keys(absolute_path)
 
 
-
 class AgeRestriction(Component):
     SIX = '//*[@id="restrict-6+"]'
     ZERO = '//*[@id="restrict-0+"]'
@@ -139,67 +142,72 @@ class AgeRestriction(Component):
             self.change_state()
 
 
-
-
 class Interest(Component):
-    BUSINESS = '//*[@id="view2332"]'
-    TUMBLER = '//*[@id="interests60"]/span[1]'
+    BUSINESS_CHECK = '#interests60 > label:nth-child(3)'
+    BUSINESS_TREE = '#interests60 > span:nth-child(1)'
+    SELECTED_LIST = 'div.campaign-setting__tree-placeholder:nth-child(1) > div:nth-child(2)'
+    INTEREST = '.campaign-setting__wrapper_interests > span:nth-child(1)'
+    #LAST_ELEMENT = '//*[@id="interests237"]/label'
 
 
-    def __init__(self):
+    def __init__(self, driver):
+        super(Interest, self).__init__(driver=driver)
         self.hash = {}
-        self.hash["B2B"] = '//*[@id="view9669"]'
-        self.hash["Малый бизнес"] = '//*[@id="view9670"]'
-        self.hash["Управление Персоналом"] = '//*[@id="view9671"]'
-        self.hash["Финансы и бухгалтерский учет"] = '//*[@id="view9672"]'
-        self.hash["Юридическая поддержка"] = '//*[@id="view9673"]'
-        self.hash["B2B / Для офиса"] = '//*[@id="view9674"]'
-        self.hash["B2B / Документальная и финансово-правовая поддержка"] = '//*[@id="view9675"]'
-        self.hash["B2B / Медицинское оборудование"] = '//*[@id="view9676"]'
-        self.hash["B2B / Оборудование, станки, энергообеспечение"] = '//*[@id="view9677"]'
-        self.hash["B2B / Реклама и маркетинг"] = '//*[@id="view9678"]'
-        self.hash["B2B / Сырье и материалы"] = '//*[@id="view9679"]'
-        self.hash["B2B / Торговое оборудование и товары оптом"] = '//*[@id="view9680"]'
+        self.hash["B2B"] = '#interests61 > label:nth-child(3)'
+        self.hash["Малый бизнес"] = '#interests62 > label:nth-child(3)'
+        self.hash["Управление Персоналом"] = '#interests63 > label:nth-child(3)'
+        self.hash["Финансы и бухгалтерский учет"] = '#interests64 > label:nth-child(3)'
+        self.hash["Юридическая поддержка"] = '#interests65 > label:nth-child(3)'
+        self.hash["B2B / Для офиса"] = '#interests207 > label:nth-child(3)'
+        self.hash["B2B / Документальная и финансово-правовая поддержка"] = '#interests208 > label:nth-child(3)'
+        self.hash["B2B / Медицинское оборудование"] = '#interests209 > label:nth-child(3)'
+        self.hash["B2B / Оборудование, станки, энергообеспечение"] = '#interests210 > label:nth-child(3)'
+        self.hash["B2B / Реклама и маркетинг"] = '#interests211 > label:nth-child(3)'
+        self.hash["B2B / Сырье и материалы"] = '#interests212 > label:nth-child(3)'
+        self.hash["B2B / Торговое оборудование и товары оптом"] = '#interests213 > label:nth-child(3)'
 
+
+    def open_interest(self):
+        self.driver.find_element_by_css_selector(self.INTEREST).click()
+
+    def open_business(self):
+        self.driver.find_element_by_css_selector(self.BUSINESS_TREE).click()
 
     def check_business(self):
-        self.driver.find_element_by_xpath(self.BUSINESS).click()
-
-
-    def check_tumbler(self):
-        self.driver.find_element_by_xpath(self.TUMBLER).click()
+        self.driver.find_element_by_css_selector(self.BUSINESS_CHECK).click()
 
 
     def hide_tree(self):
-        elem = self.driver.find_element_by_xpath(self.hash["B2B"])
+        elem = self.driver.find_element_by_css_selector(self.hash["B2B"])
         if elem.is_displayed():
-            self.check_business()
-
+            self.open_business()
 
     def deselect_all(self):
-        elem = self.driver.find_element_by_xpath(self.BUSINESS)
+        elem = self.driver.find_element_by_css_selector(self.BUSINESS_CHECK)
         if elem.get_attribute("checked"):
             self.check_business()
             self.check_business()
         else:
             self.check_business()
 
-
     def click_element(self, name):
-        self.driver.find_element_by_xpath(self.hash[name]).click()
-
+        self.driver.find_element_by_css_selector(self.hash[name]).click()
 
     def is_checked(self, array_name):
         for i in array_name:
-            elem = self.driver.find_element_by_xpath(self.hash[i])
+            elem = self.driver.find_element_by_css_selector(self.hash[i])
             if (elem.get_attribute("checked") == False):
                 return False
         return True
 
-
     def is_in_list(self, array_name):
-        if array_name.length
-
-
-
-
+        select_list = self.driver.find_element_by_css_selector(self.SELECTED_LIST)
+        source = select_list.get_attribute("innerHTML")
+        if array_name.length > 5:
+            if ( 'Бизнес(' + str(array_name.length) + ' из 12)' ) in source:
+                return True
+        else:
+            for i in array_name:
+                if self.hash[i] not in source:
+                    return False
+        return True
