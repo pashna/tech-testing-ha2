@@ -2,12 +2,13 @@
 
 import sys
 import unittest
-from tests.AuthTestCase import AuthTestCase
+from tests.RequireMenuTestCase import AuthTestCase
+from tests.ReloadPageTestCase import ReloadPageTestCase
 
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
-        unittest.makeSuite(AuthTestCase),
+        unittest.makeSuite(ReloadPageTestCase),
     ))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

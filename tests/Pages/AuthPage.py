@@ -1,6 +1,7 @@
 from tests.Pages.Component import Component
 from tests.Pages.Page import Page
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import WebDriverException
 
 __author__ = 'popka'
 
