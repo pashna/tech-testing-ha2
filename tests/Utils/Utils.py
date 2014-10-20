@@ -29,6 +29,7 @@ def auth(driver):
 
     return create_page
 
+
 def ajax_complete(driver):
     try:
         return 0 == driver.execute_script("return jQuery.active")
@@ -39,11 +40,13 @@ def wait_for_ajax_complete(driver):
     WebDriverWait(driver, 30, 3).until(ajax_complete, 'AJAX')
 
 
+
 def wait_for_create_page_load(driver):
     LAST_ELEMENT = '/html/body/div[8]'
     WebDriverWait(driver, 30, 1).until(
             lambda d: d.find_element_by_xpath(LAST_ELEMENT)
     )
+
 
 def wait_for_campaigns_page_load(driver):
     LAST_ELEMENT = '/html/body/div[9]'
@@ -51,8 +54,10 @@ def wait_for_campaigns_page_load(driver):
             lambda d: d.find_element_by_xpath(LAST_ELEMENT)
     )
 
+
 def generate_random_word(length):
    return ''.join(random.choice(string.lowercase) for i in range(length))
+
 
 
 def fill_require(driver, create_page, LINK='play.google.com/store/apps/details?id=org.bmstu.BmstuSchedule&hl=ru',

@@ -7,6 +7,7 @@ import os
 #from tests.Utils.Utils import ajax_complete
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import ElementNotVisibleException
 
 __author__ = 'popka'
 
@@ -25,6 +26,10 @@ class CreatePage(Page):
     @property
     def require_menu(self):
         return RequireMenu(self.driver)
+
+    @property
+    def age_restriction(self):
+        return AgeRestriction(self.driver)
 
     def set_radio_mobile_app(self):
         self.driver.find_element_by_css_selector(self.MOBILE).click()
@@ -99,13 +104,34 @@ class RequireMenu(Component):
         element.send_keys(absolute_path)
 
 
+class AgeRestriction(Component):
+    SIX = '//*[@id="restrict-6+"]'
+    ZERO = '//*[@id="restrict-0+"]'
+    TITLE = '/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[7]/div/div[2]/ul/li[3]/div/div[2]/span'
+    DEFAULT = '//*[@id="restrict-"]'
 
+    def set_six(self):
+        self.driver.find_element_by_xpath(self.SIX).click()
 
+    def set_zero(self):
+        self.driver.find_element_by_xpath(self.ZERO).click()
 
+    def _set_default(self):
+        self.driver.find_element_by_xpath(self.DEFAULT).click()
 
+    def get_value(self):
+        element = self.driver.find_element_by_xpath(self.TITLE)
+        return element.get_attribute("innerHTML")
 
-    # TRY TO MOVE INTO UTILS!!!!
+    def change_state(self):
+        self.driver.find_element_by_xpath(self.TITLE).click()
 
-
-
-
+    def close(self):
+        element = self.driver.find_element_by_xpath(self.ZERO)
+        if element.is_displayed():
+            self._set_default()
+            self.change_state()
+        else:
+            self.change_state()
+            self._set_default()
+            self.change_state()
