@@ -3,8 +3,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from tests.Pages.Component import Component
 from tests.Pages.Page import Page
 import os
-
-#from tests.Utils.Utils import ajax_complete
+import tests.Utils.Utils
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import NoSuchElementException
@@ -66,7 +65,7 @@ class TopMenu(Component):
 
 class RequireMenu(Component):
     LINK = "/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[1]/span[2]/input"
-    HEADER = '/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[2]/input'
+    HEADER = 'li.banner-form__row:nth-child(2) > input:nth-child(2)'
     TEXT = '/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[3]/textarea'
     SMALL_PICTURE = '.banner-form__img-file'
     BIG_PICTURE = '/html/body/div[1]/div[5]/div/div[2]/div/div[1]/div[3]/div/div[1]/ul/li[9]/form/div/input'
@@ -91,7 +90,8 @@ class RequireMenu(Component):
 
     def set_header(self, header):
         header = unicode(header, errors='replace')
-        element = self.driver.find_element_by_xpath(self.HEADER)
+        element = self.driver.find_element_by_css_selector(self.HEADER)
+        tests.Utils.Utils.wait_for_header_available(driver=self.driver)
         element.send_keys(header)
 
     def set_text(self, text):

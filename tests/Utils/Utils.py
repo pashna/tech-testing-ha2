@@ -51,13 +51,19 @@ def wait_for_create_page_load(driver):
     )
 
 
+def header_available(driver):
+    return (False == driver.execute_script('return document.querySelector("li.banner-form__row:nth-child(2) > input:nth-child(2)").className.indexOf("disable") > 0'))
 
+
+def wait_for_header_available(driver):
+    WebDriverWait(driver, 30, 3).until(header_available, 'HEADER')
 
 def wait_for_campaigns_page_load(driver):
     LAST_ELEMENT = '/html/body/div[9]'
     WebDriverWait(driver, 30, 2).until(
             lambda d: d.find_element_by_xpath(LAST_ELEMENT)
     )
+
 
 def wait_for_edit_page_load(driver):
     LAST_ELEMENT = '/html/body/div[8]'
@@ -83,7 +89,6 @@ def fill_require(driver, create_page, title='test', LINK='play.google.com/store/
     require_menu = create_page.require_menu
     require_menu.set_link(LINK)
     wait_for_ajax_complete(driver=driver)
-
     require_menu.set_header(HEADER)
     require_menu.set_text(TEXT)
     require_menu.set_big_photo(BIG_PHOTO)

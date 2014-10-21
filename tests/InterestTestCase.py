@@ -7,17 +7,26 @@ import tests.Utils.Utils as utils
 from selenium.webdriver import ActionChains, DesiredCapabilities, Remote
 from selenium.webdriver.support.wait import WebDriverWait
 from tests.Pages.CreatePage import CreatePage
+import os
 
 class InterestTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        '''
         InterestTest.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
             #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
             desired_capabilities=DesiredCapabilities.FIREFOX.copy()
         )
         #utils.fill_require(InterestInterfaceTest.driver, create_page=InterestInterfaceTest.create_page)
+        '''
+        browser = os.environ.get('TTHA2BROWSER', 'CHROME')
+
+        InterestTest.driver = Remote(
+            command_executor='http://127.0.0.1:4444/wd/hub',
+            desired_capabilities=getattr(DesiredCapabilities, browser).copy()
+        )
         utils.auth(driver=InterestTest.driver)
 
 
@@ -50,7 +59,7 @@ class InterestTest(unittest.TestCase):
         edit_page = utils.open_last_details(driver=self.driver)
 
         interest_form = edit_page.interest_form
-
+        utils.wait_for_ajax_complete(driver=self.driver)
         self.assertTrue(interest_form.is_business_selected())
 
 
@@ -70,7 +79,7 @@ class InterestTest(unittest.TestCase):
         edit_page = utils.open_last_details(driver=self.driver)
 
         interest_form = edit_page.interest_form
-
+        utils.wait_for_ajax_complete(driver=self.driver)
         self.assertTrue(interest_form.is_selected(array_name))
 
 
@@ -98,7 +107,7 @@ class InterestTest(unittest.TestCase):
         edit_page = utils.open_last_details(driver=self.driver)
 
         interest_form = edit_page.interest_form
-
+        utils.wait_for_ajax_complete(driver=self.driver)
         self.assertTrue(interest_form.is_selected(array_name))
 
 
@@ -121,7 +130,7 @@ class InterestTest(unittest.TestCase):
         edit_page = utils.open_last_details(driver=self.driver)
 
         interest_form = edit_page.interest_form
-
+        utils.wait_for_ajax_complete(driver=self.driver)
         self.assertTrue(interest_form.is_selected(array_name_short))
 
 
@@ -142,4 +151,5 @@ class InterestTest(unittest.TestCase):
         edit_page = utils.open_last_details(driver=self.driver)
 
         interest_form = edit_page.interest_form
+        utils.wait_for_ajax_complete(driver=self.driver)
         self.assertTrue(interest_form.is_selected(array_name))
