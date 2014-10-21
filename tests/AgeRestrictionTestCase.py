@@ -9,32 +9,32 @@ from tests.Pages.CreatePage import CreatePage
 
 
 
-class AgeRestrictionInterfaceTestCase(unittest.TestCase):
+class AgeRestrictionTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        AgeRestrictionInterfaceTestCase.driver = Remote(
+        AgeRestrictionTestCase.driver = Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
             #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
             desired_capabilities=DesiredCapabilities.FIREFOX.copy()
         )
-        utils.auth(driver=AgeRestrictionInterfaceTestCase.driver)
+        utils.auth(driver=AgeRestrictionTestCase.driver)
         #utils.fill_require(AgeRestrictionInterfaceTestCase.driver, create_page=AgeRestrictionInterfaceTestCase.create_page)
 
 
     @classmethod
     def tearDownClass(cls):
-        AgeRestrictionInterfaceTestCase.driver.quit()
+        AgeRestrictionTestCase.driver.quit()
 
 
 
     def setUp(self):
-        self.create_page = CreatePage(AgeRestrictionInterfaceTestCase.driver)
+        self.create_page = CreatePage(AgeRestrictionTestCase.driver)
         self.create_page.open()
         self.age_restriction = self.create_page.age_restriction
 
-        utils.wait_for_create_page_load(AgeRestrictionInterfaceTestCase.driver)
-        utils.wait_for_ajax_complete(AgeRestrictionInterfaceTestCase.driver)
+        utils.wait_for_create_page_load(AgeRestrictionTestCase.driver)
+        utils.wait_for_ajax_complete(AgeRestrictionTestCase.driver)
 
         utils.fill_require(self.driver, self.create_page)
         utils.wait_for_ajax_complete(self.driver)

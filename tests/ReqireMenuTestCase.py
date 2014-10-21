@@ -7,7 +7,7 @@ import tests.Utils.Utils as utils
 from tests.Pages.CampaignsPage import CampaignsPage
 import random
 
-class ReloadPageTestCase(unittest.TestCase):
+class RequireMenuTestCase(unittest.TestCase):
 
     def setUp(self):
         self.browser = DesiredCapabilities.FIREFOX.copy()
