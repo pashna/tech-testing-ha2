@@ -5,6 +5,7 @@ from tests.Utils.Utils import auth
 from selenium.webdriver.support.ui import WebDriverWait
 from tests.Utils.Utils import ajax_complete
 import tests.Utils.Utils as utils
+from tests.Pages.CreatePage import CreatePage
 
 
 
@@ -17,8 +18,8 @@ class AgeRestrictionInterfaceTestCase(unittest.TestCase):
             #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
             desired_capabilities=DesiredCapabilities.FIREFOX.copy()
         )
-        AgeRestrictionInterfaceTestCase.create_page = utils.auth(driver=AgeRestrictionInterfaceTestCase.driver)
-        utils.fill_require(AgeRestrictionInterfaceTestCase.driver, create_page=AgeRestrictionInterfaceTestCase.create_page)
+        utils.auth(driver=AgeRestrictionInterfaceTestCase.driver)
+        #utils.fill_require(AgeRestrictionInterfaceTestCase.driver, create_page=AgeRestrictionInterfaceTestCase.create_page)
 
 
     @classmethod
@@ -28,20 +29,31 @@ class AgeRestrictionInterfaceTestCase(unittest.TestCase):
 
 
     def setUp(self):
-        self.age_restriction = AgeRestrictionInterfaceTestCase.create_page.age_restriction
+        self.create_page = CreatePage(AgeRestrictionInterfaceTestCase.driver)
+        self.create_page.open()
+        self.age_restriction = self.create_page.age_restriction
 
-    def tearDown(self):
-        self.age_restriction.close()
+        utils.wait_for_create_page_load(AgeRestrictionInterfaceTestCase.driver)
+        utils.wait_for_ajax_complete(AgeRestrictionInterfaceTestCase.driver)
+
+        utils.fill_require(self.driver, self.create_page)
+        utils.wait_for_ajax_complete(self.driver)
 
 
     #Работает ли выбор радио_баттона
     def test_age_restriction__select(self):
         VALUE = '6+'
         self.age_restriction.change_state()
-
         self.age_restriction.set_six()
-        self.assertTrue(self.age_restriction.get_value() == VALUE)
 
+        utils.wait_for_ajax_complete(self.driver)
+        self.create_page.submit()
+
+        utils.wait_for_ajax_complete(driver=self.driver)
+
+        edit_page = utils.open_last_details(driver=self.driver)
+
+        self.assertTrue(edit_page.age_restriction_form.get_value() == VALUE)
 
     # Если ли возможность поменять выбор
     def test_age_restriction__change_choice(self):
@@ -52,7 +64,14 @@ class AgeRestrictionInterfaceTestCase(unittest.TestCase):
         self.age_restriction.set_zero()
         self.age_restriction.set_six()
 
-        self.assertTrue(self.age_restriction.get_value() == VALUE)
+        utils.wait_for_ajax_complete(self.driver)
+        self.create_page.submit()
+
+        utils.wait_for_ajax_complete(driver=self.driver)
+
+        edit_page = utils.open_last_details(driver=self.driver)
+
+        self.assertTrue(edit_page.age_restriction_form.get_value() == VALUE)
 
 
     # Не потеряется ли выбор при закрытии панели
@@ -63,4 +82,11 @@ class AgeRestrictionInterfaceTestCase(unittest.TestCase):
         self.age_restriction.set_six()
         self.age_restriction.change_state()
 
-        self.assertTrue(self.age_restriction.get_value() == VALUE)
+        utils.wait_for_ajax_complete(self.driver)
+        self.create_page.submit()
+
+        utils.wait_for_ajax_complete(driver=self.driver)
+
+        edit_page = utils.open_last_details(driver=self.driver)
+
+        self.assertTrue(edit_page.age_restriction_form.get_value() == VALUE)

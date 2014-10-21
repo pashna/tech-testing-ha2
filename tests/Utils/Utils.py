@@ -1,4 +1,5 @@
-__author__ = 'popka'
+#coding=utf-8
+__author__ = u'popka'
 
 import os
 from tests.Pages.AuthPage import AuthPage
@@ -7,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
 import random
 import string
+from tests.Pages.CampaignsPage import CampaignsPage
+from tests.Pages.EditPage import EditPage
 
 def auth(driver):
     USERNAME = 'tech-testing-ha2-14@bk.ru'
@@ -48,23 +51,31 @@ def wait_for_create_page_load(driver):
     )
 
 
+
+
 def wait_for_campaigns_page_load(driver):
     LAST_ELEMENT = '/html/body/div[9]'
     WebDriverWait(driver, 30, 2).until(
             lambda d: d.find_element_by_xpath(LAST_ELEMENT)
     )
 
+def wait_for_edit_page_load(driver):
+    LAST_ELEMENT = '/html/body/div[8]'
+    WebDriverWait(driver, 30, 2).until(
+            lambda d: d.find_element_by_xpath(LAST_ELEMENT)
+    )
+
 
 def generate_random_word(length):
-   return ''.join(random.choice(string.lowercase) for i in range(length))
+    return (''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(length)]))
 
 
-
-def fill_require(driver, create_page, LINK='play.google.com/store/apps/details?id=org.bmstu.BmstuSchedule&hl=ru',
+def fill_require(driver, create_page, title='test', LINK='play.google.com/store/apps/details?id=org.bmstu.BmstuSchedule&hl=ru',
                  HEADER = 'BMSTU DASHBOARD', TEXT = 'AMAZING APPLICATION! FOR YOU, FOR ME, FOR YOUR CAT',
-                 BIG_PHOTO = 'banner.jpg', SMALL_PHOTO = 'icon.jpg', title = generate_random_word(5)):
+                 BIG_PHOTO = 'banner.jpg', SMALL_PHOTO = 'icon.jpg'):
 
     #create_page = auth(driver=driver)
+    title += generate_random_word(5)
     create_page.set_title(title)
     create_page.set_radio_mobile_app()
     create_page.set_lenta()
@@ -79,6 +90,23 @@ def fill_require(driver, create_page, LINK='play.google.com/store/apps/details?i
     require_menu.set_small_photo(SMALL_PHOTO)
 
     wait_for_ajax_complete(driver=driver)
+
+
+def open_last_details(driver):
+    campaings_page = CampaignsPage(driver=driver)
+    campaings_page.open()
+
+    wait_for_campaigns_page_load(driver=driver)
+    wait_for_ajax_complete(driver=driver)
+
+    campaings_page.central_part.open_edit_first_ads()
+
+    wait_for_ajax_complete(driver=driver)
+    wait_for_edit_page_load(driver)
+    wait_for_ajax_complete(driver=driver)
+
+    return EditPage(driver=driver)
+
 
 
 

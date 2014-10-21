@@ -2,16 +2,16 @@
 
 import sys
 import unittest
-from tests.AgeRestrictionInterfaceTestCase import AgeRestrictionInterfaceTestCase
-from tests.ReloadPageTestCase import ReloadPageTestCase
-from tests.InterestInterfaceTest import InterestInterfaceTest
+from tests.AgeRestrictionTestCase import AgeRestrictionInterfaceTestCase
+from tests.ReqireMenuTestCase import ReloadPageTestCase
+from tests.InterestTestCase import InterestInterfaceTest
 
 
 if __name__ == '__main__':
     suite = unittest.TestSuite((
-        unittest.makeSuite(#ReloadPageTestCase,
-                           #AgeRestrictionInterfaceTestCase
-                           InterestInterfaceTest),
-    ))
+        #unittest.makeSuite(ReloadPageTestCase))
+        unittest.makeSuite(AgeRestrictionInterfaceTestCase)))
+    #    unittest.makeSuite(InterestInterfaceTest)),
+    #))
     result = unittest.TextTestRunner().run(suite)
     sys.exit(not result.wasSuccessful())

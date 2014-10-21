@@ -1,4 +1,5 @@
 #coding=utf-8
+
 __author__ = 'popka'
 
 import unittest
@@ -32,39 +33,26 @@ class InterestInterfaceTest(unittest.TestCase):
         self.interest = self.create_page.interest
 
 
-    def tearDown(self):
-        pass
-        #self.interest.deselect_all()
-        #self.interest.hide_tree()
-
     def test_check_business(self):
 
         self.interest.open_interest()
-     #   utils.wait_for_ajax_complete(self.driver)
         self.interest.check_business()
         utils.wait_for_ajax_complete(self.driver)
         self.assertTrue(self.interest.is_business_selected())
-    #"""
 
-    #"""
-    def test_check_several_inside(self):
-        array_name = ["Малый бизнес", "Управление персоналом"]
+
+    def test_check_inside(self):
+        array_name = ["Малый бизнес"]
 
         self.interest.open_interest()
         utils.wait_for_ajax_complete(self.driver)
         self.interest.open_business()
-     #   utils.wait_for_ajax_complete(self.driver)
-        self.interest.click_element(array_name[0])
-        self.interest.click_element(array_name[1])
 
-        #WebDriverWait(self.driver, 30, 0.1).until(
-         #   lambda d: d.find_element_by_css_selector('csqwe')
-        #)
-        utils.wait_for_ajax_complete(self.driver) # WAIT FOR JS???
+        self.interest.click_element(array_name[0])
+
+        utils.wait_for_ajax_complete(self.driver)
         self.assertTrue(self.interest.is_selected(array_name))
 
-    #"""
-  #  """
     def test_check_more_than_six(self):
         array_name = ["B2B", "Малый бизнес", "Управление персоналом",
                       "Финансы и бухгалтерский учет", "Юридическая поддержка",
@@ -73,7 +61,7 @@ class InterestInterfaceTest(unittest.TestCase):
         self.interest.open_interest()
         utils.wait_for_ajax_complete(self.driver)
         self.interest.open_business()
-   #     utils.wait_for_ajax_complete(self.driver)
+
         self.interest.click_element(array_name[0])
         self.interest.click_element(array_name[1])
         self.interest.click_element(array_name[2])
@@ -81,9 +69,9 @@ class InterestInterfaceTest(unittest.TestCase):
         self.interest.click_element(array_name[4])
         self.interest.click_element(array_name[5])
         self.interest.click_element(array_name[6])
+
         utils.wait_for_ajax_complete(self.driver)
         self.assertTrue(self.interest.is_selected(array_name))
- #   """
 
 
     def test_cancel_element(self):
@@ -93,7 +81,6 @@ class InterestInterfaceTest(unittest.TestCase):
         self.interest.open_interest()
         utils.wait_for_ajax_complete(self.driver)
         self.interest.open_business()
-#        utils.wait_for_ajax_complete(self.driver)
         self.interest.click_element(array_name_long[0])
         self.interest.click_element(array_name_long[1])
         self.interest.click_element(array_name_long[1])
@@ -106,9 +93,11 @@ class InterestInterfaceTest(unittest.TestCase):
 
         self.interest.open_interest()
         utils.wait_for_ajax_complete(self.driver)
+
         self.interest.open_business()
         self.interest.click_element(array_name[0])
         self.interest.open_business()
+
         utils.wait_for_ajax_complete(self.driver)
         self.assertTrue(self.interest.is_selected(array_name))
 
