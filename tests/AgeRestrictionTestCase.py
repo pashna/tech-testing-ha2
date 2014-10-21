@@ -14,12 +14,6 @@ class AgeRestrictionTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        '''AgeRestrictionTestCase.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
-            desired_capabilities=DesiredCapabilities.FIREFOX.copy()
-        )
-        '''
         browser = os.environ.get('TTHA2BROWSER', 'CHROME')
 
         AgeRestrictionTestCase.driver = Remote(
@@ -27,7 +21,6 @@ class AgeRestrictionTestCase(unittest.TestCase):
             desired_capabilities=getattr(DesiredCapabilities, browser).copy()
         )
         utils.auth(driver=AgeRestrictionTestCase.driver)
-        #utils.fill_require(AgeRestrictionInterfaceTestCase.driver, create_page=AgeRestrictionInterfaceTestCase.create_page)
 
 
     @classmethod

@@ -203,9 +203,7 @@ class Interest(Component):
     def is_selected(self, array_name):
         select_list = self.driver.find_element_by_css_selector(self.SELECTED_LIST)
         source = select_list.get_attribute("innerHTML").encode('utf-8')
-        print(source)
         if len(array_name) > 5:
-            print('(' + str(len(array_name)) + ' из 12)')
             if ( '(' + str(len(array_name)) + ' из 12)' ) in source:
                 return True
         else:
@@ -218,7 +216,6 @@ class Interest(Component):
         business = "Бизнес"
         select_list = self.driver.find_element_by_css_selector(self.SELECTED_LIST)
         source = select_list.get_attribute("innerHTML").encode('utf-8')
-        print(source)
         if business in source:
             return True
         else:

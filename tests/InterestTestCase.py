@@ -13,14 +13,6 @@ class InterestTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        '''
-        InterestTest.driver = Remote(
-            command_executor='http://127.0.0.1:4444/wd/hub',
-            #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
-            desired_capabilities=DesiredCapabilities.FIREFOX.copy()
-        )
-        #utils.fill_require(InterestInterfaceTest.driver, create_page=InterestInterfaceTest.create_page)
-        '''
         browser = os.environ.get('TTHA2BROWSER', 'CHROME')
 
         InterestTest.driver = Remote(
