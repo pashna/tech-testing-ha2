@@ -155,7 +155,7 @@ class Interest(Component):
         self.hash = {}
         self.hash["B2B"] = '#interests61 > label:nth-child(3)'
         self.hash["Малый бизнес"] = '#interests62 > label:nth-child(3)'
-        self.hash["Управление Персоналом"] = '#interests63 > label:nth-child(3)'
+        self.hash["Управление персоналом"] = '#interests63 > label:nth-child(3)'
         self.hash["Финансы и бухгалтерский учет"] = '#interests64 > label:nth-child(3)'
         self.hash["Юридическая поддержка"] = '#interests65 > label:nth-child(3)'
         self.hash["B2B / Для офиса"] = '#interests207 > label:nth-child(3)'
@@ -200,14 +200,26 @@ class Interest(Component):
                 return False
         return True
 
-    def is_in_list(self, array_name):
+    def is_selected(self, array_name):
         select_list = self.driver.find_element_by_css_selector(self.SELECTED_LIST)
-        source = select_list.get_attribute("innerHTML")
-        if array_name.length > 5:
-            if ( 'Бизнес(' + str(array_name.length) + ' из 12)' ) in source:
+        source = select_list.get_attribute("innerHTML").encode('utf-8')
+        print(source)
+        if len(array_name) > 5:
+            print('(' + str(len(array_name)) + ' из 12)')
+            if ( '(' + str(len(array_name)) + ' из 12)' ) in source:
                 return True
         else:
-            for i in array_name:
-                if self.hash[i] not in source:
+            for i in range(len(array_name)):
+                if array_name[i] not in source:
                     return False
         return True
+
+    def is_business_selected(self):
+        business = "Бизнес"
+        select_list = self.driver.find_element_by_css_selector(self.SELECTED_LIST)
+        source = select_list.get_attribute("innerHTML").encode('utf-8')
+        print(source)
+        if business in source:
+            return True
+        else:
+            return False

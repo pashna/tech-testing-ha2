@@ -5,6 +5,7 @@ import unittest
 import tests.Utils.Utils as utils
 from selenium.webdriver import ActionChains, DesiredCapabilities, Remote
 from selenium.webdriver.support.wait import WebDriverWait
+from tests.Pages.CreatePage import CreatePage
 
 class InterestInterfaceTest(unittest.TestCase):
 
@@ -15,8 +16,8 @@ class InterestInterfaceTest(unittest.TestCase):
             #desired_capabilities=getattr(DesiredCapabilities, browser).copy()
             desired_capabilities=DesiredCapabilities.FIREFOX.copy()
         )
-        InterestInterfaceTest.create_page = utils.auth(driver=InterestInterfaceTest.driver)
-        utils.fill_require(InterestInterfaceTest.driver, create_page=InterestInterfaceTest.create_page)
+        #utils.fill_require(InterestInterfaceTest.driver, create_page=InterestInterfaceTest.create_page)
+        utils.auth(driver=InterestInterfaceTest.driver)
 
 
     @classmethod
@@ -24,20 +25,90 @@ class InterestInterfaceTest(unittest.TestCase):
         InterestInterfaceTest.driver.quit()
 
     def setUp(self):
-        self.interest = InterestInterfaceTest.create_page.interest
+        self.create_page = CreatePage(InterestInterfaceTest.driver)
+        self.create_page.open()
+        utils.wait_for_create_page_load(InterestInterfaceTest.driver)
+        utils.wait_for_ajax_complete(InterestInterfaceTest.driver)
+        self.interest = self.create_page.interest
 
 
     def tearDown(self):
-        self.interest.deselect_all()
-        self.interest.hide_tree()
+        pass
+        #self.interest.deselect_all()
+        #self.interest.hide_tree()
 
-    def test_checked(self):
- #       array_name = ["Малый бизнес"]
-#
-#        self.interest.check_tumbler()
-#        self.interest.click_element(array_name)
-#        self.assertTrue(self.interest.is_checked(array_name))
+    def test_check_business(self):
+
+        self.interest.open_interest()
+     #   utils.wait_for_ajax_complete(self.driver)
+        self.interest.check_business()
+        utils.wait_for_ajax_complete(self.driver)
+        self.assertTrue(self.interest.is_business_selected())
+    #"""
+
+    #"""
+    def test_check_several_inside(self):
+        array_name = ["Малый бизнес", "Управление персоналом"]
+
         self.interest.open_interest()
         utils.wait_for_ajax_complete(self.driver)
         self.interest.open_business()
-        self.interest.check_business()
+     #   utils.wait_for_ajax_complete(self.driver)
+        self.interest.click_element(array_name[0])
+        self.interest.click_element(array_name[1])
+
+        #WebDriverWait(self.driver, 30, 0.1).until(
+         #   lambda d: d.find_element_by_css_selector('csqwe')
+        #)
+        utils.wait_for_ajax_complete(self.driver) # WAIT FOR JS???
+        self.assertTrue(self.interest.is_selected(array_name))
+
+    #"""
+  #  """
+    def test_check_more_than_six(self):
+        array_name = ["B2B", "Малый бизнес", "Управление персоналом",
+                      "Финансы и бухгалтерский учет", "Юридическая поддержка",
+                      "B2B / Для офиса", "B2B / Документальная и финансово-правовая поддержка"]
+
+        self.interest.open_interest()
+        utils.wait_for_ajax_complete(self.driver)
+        self.interest.open_business()
+   #     utils.wait_for_ajax_complete(self.driver)
+        self.interest.click_element(array_name[0])
+        self.interest.click_element(array_name[1])
+        self.interest.click_element(array_name[2])
+        self.interest.click_element(array_name[3])
+        self.interest.click_element(array_name[4])
+        self.interest.click_element(array_name[5])
+        self.interest.click_element(array_name[6])
+        utils.wait_for_ajax_complete(self.driver)
+        self.assertTrue(self.interest.is_selected(array_name))
+ #   """
+
+
+    def test_cancel_element(self):
+        array_name_short = ["B2B"]
+        array_name_long = ["B2B", "Малый бизнес"]
+
+        self.interest.open_interest()
+        utils.wait_for_ajax_complete(self.driver)
+        self.interest.open_business()
+#        utils.wait_for_ajax_complete(self.driver)
+        self.interest.click_element(array_name_long[0])
+        self.interest.click_element(array_name_long[1])
+        self.interest.click_element(array_name_long[1])
+        utils.wait_for_ajax_complete(self.driver)
+        self.assertTrue(self.interest.is_selected(array_name_short))
+
+
+    def test_save_on_close(self):
+        array_name = ["B2B"]
+
+        self.interest.open_interest()
+        utils.wait_for_ajax_complete(self.driver)
+        self.interest.open_business()
+        self.interest.click_element(array_name[0])
+        self.interest.open_business()
+        utils.wait_for_ajax_complete(self.driver)
+        self.assertTrue(self.interest.is_selected(array_name))
+
